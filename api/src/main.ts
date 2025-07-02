@@ -1,7 +1,8 @@
 import express from "express";
-import dotenv from "dotenv";
+import { configDotenv } from "dotenv";
+import { filmes } from "./data/filmes.ts";
 
-dotenv.config();
+configDotenv();
 
 const app = express();
 const PORT = process.env.PORT || 5173;
@@ -9,6 +10,11 @@ const PORT = process.env.PORT || 5173;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+app.get("/filmes", (req, res) => {
+  res.status(200).json(filmes);
+});
+
 app.get("/", (req, res) => {
   res.send("Aloha mundo!");
 });
