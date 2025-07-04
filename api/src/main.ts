@@ -11,10 +11,18 @@ app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
 
+//main routes
 app.get("/filmes", (req, res) => {
   res.status(200).json(filmes);
 });
 
+app.get("/filmes/:id", (req, res) => {
+  const { id } = req.params;
+  const filme = filmes.find((f: any) => f.id === id);
+  res.status(200).json(filme || { error: "Filme not found" });
+});
+
+// Additional routes
 app.get("/", (req, res) => {
   res.send("Aloha mundo!");
 });

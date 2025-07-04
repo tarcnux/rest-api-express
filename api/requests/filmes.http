@@ -1,3 +1,18 @@
 //REST Client
 // To run this request, you need to install the REST Client extension for Visual Studio Code.   
 GET http://localhost:8888/filmes
+
+###
+GET http://localhost:8888/filmes/1
+
+###
+GET http://localhost:8888/filmes/FIL001
+
+###
+GET http://localhost:8888/info
+
+###
+GET http://localhost:8888/config
+
+###
+GET http://localhost:8888/status
