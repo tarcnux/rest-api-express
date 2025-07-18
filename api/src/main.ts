@@ -1,11 +1,21 @@
 import express from "express";
 import { configDotenv } from "dotenv";
 import { filmes } from "./data/filmes.ts";
+import type { Filme } from "./model/index.ts";
 
 configDotenv();
 
 const app = express();
 const PORT = process.env.PORT || 5173;
+
+function cleanFields(filme: Filme, ignorar: string | undefined) {
+  const ignoreFields = ignorar ? ignorar.toString().split(",") : [];
+  const filmeCopy : Partial<Filme> = { ...filme };
+  ignoreFields.forEach(
+    (field: string) => {delete filmeCopy[field.trim() as keyof Filme]}
+  );
+  return filmeCopy;
+}
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
@@ -13,13 +23,29 @@ app.listen(PORT, () => {
 
 //main routes
 app.get("/filmes", (req, res) => {
-  res.status(200).json(filmes);
+  const { ignorar } = req.query as any;
+  const cleanFilmes = filmes.map((filme: Filme) => cleanFields(filme, ignorar));
+  res.status(200).json(cleanFilmes);
 });
+
+app.get("/filmes/ping", (req, res) => {
+  console.log("GET /filmes/ping - Pong response sent");
+  res.status(200).send('Pong');
+});
+
 
 app.get("/filmes/:id", (req, res) => {
   const { id } = req.params;
-  const filme = filmes.find((f: any) => f.id === id);
-  res.status(200).json(filme || { error: "Filme not found" });
+  const { ignorar } = req.query as any;
+  
+  const filme = filmes.find((f: Filme) => f.id === id);
+
+  if (!filme) {
+    res.status(404).json({ error: "Filme not found" });
+    return;
+  }
+  
+  res.status(200).json(cleanFields(filme, ignorar));
 });
 
 // Additional routes

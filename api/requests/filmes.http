@@ -1,18 +1,30 @@
 //REST Client
-// To run this request, you need to install the REST Client extension for Visual Studio Code.   
-GET http://localhost:8888/filmes
+// To run this request, you need to install the REST Client extension for Visual Studio Code.
+// https://marketplace.visualstudio.com/items?itemName=humao.rest-client
+
+@urlBase = http://localhost:8888
+GET {{urlBase}}/filmes/ping
+
+### Buscando todos os filmes
+GET {{urlBase}}/filmes
+
+### Buscando todos os filmes e ignorando campos específicos
+GET {{urlBase}}/filmes?ignorar=elenco, diretor, genero
+
+### Ignorando campos usando parâmetros de query
+GET {{urlBase}}/filmes/FIL001?ignorar=elenco, diretor, genero
+
+### Filme existente
+GET {{urlBase}}/filmes/FIL004
+
+### Filme não existente
+GET {{urlBase}}/filmes/FIL999
 
 ###
-GET http://localhost:8888/filmes/1
+GET {{urlBase}}/info
 
 ###
-GET http://localhost:8888/filmes/FIL001
+GET {{urlBase}}/config
 
 ###
-GET http://localhost:8888/info
-
-###
-GET http://localhost:8888/config
-
-###
-GET http://localhost:8888/status
+GET {{urlBase}}/status
